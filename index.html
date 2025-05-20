@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بايثون بالعربي - دروس</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3776ab;
+            --secondary: #ffd43b;
+            --accent: #ff5722;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #4caf50;
+            --danger: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tahoma', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.8;
+            direction: rtl;
+            text-align: right;
+            padding-bottom: 3rem;
+            /* Space for footer */
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #2d5f8b);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.7rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .mascot {
+            position: absolute;
+            bottom: -15px;
+            left: 20px;
+            /* Changed to left for RTL */
+            font-size: 5rem;
+            opacity: 0.7;
+            transform: rotateY(180deg);
+            /* Flip mascot for RTL */
+        }
+
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.8rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-left: 0.7rem;
+            /* Adjusted for RTL */
+            margin-right: 0;
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .container {
+            max-width: 900px;
+            /* Slightly narrower for focus */
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .lesson-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            display: none;
+            border-right: 6px solid var(--primary);
+            /* Accent on right for RTL */
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .lesson-section.active {
+            display: block;
+        }
+
+        .lesson-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--light);
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .lesson-content {
+            margin-bottom: 2rem;
+        }
+
+        .lesson-content h3 {
+            color: var(--accent);
+            margin: 2rem 0 1rem;
+            font-size: 1.5rem;
+            border-bottom: 1px dotted var(--light);
+            padding-bottom: 0.5rem;
+        }
+
+        .lesson-content p {
+            margin-bottom: 1rem;
+            color: #444;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .lesson-content ul,
+        .lesson-content ol {
+            margin-right: 1.8rem;
+            /* Adjusted for RTL */
+            margin-bottom: 1.5rem;
+            list-style-position: outside;
+        }
+
+        .lesson-content li {
+            margin-bottom: 0.7rem;
+            font-size: 1.05rem;
+            color: #555;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 1.2rem;
+            border-radius: 8px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            /* Fira Code for ligatures */
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            direction: ltr;
+            /* Force LTR for code */
+            text-align: left;
+            /* Force left align for code */
+            position: relative;
+        }
+
+        .code-block::before {
+
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 0.2rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .code-keyword {
+            color: #c678dd;
+        }
+
+        .code-function {
+            color: #61afef;
+        }
+
+        .code-string {
+            color: #98c379;
+        }
+
+        .code-comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .code-number {
+            color: #d19a66;
+        }
+
+        .output {
+            background-color: #e8e8e8;
+            color: #333;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            border-right: 4px solid var(--accent);
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            /* Preserve whitespace and wrap text */
+            direction: ltr;
+            /* Force LTR for output */
+            text-align: left;
+            /* Force left align for output */
+        }
+
+        /* Quiz styles */
+        .quiz {
+            background-color: #f0f8ff;
+            /* Light blue background for quizzes */
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 2rem 0;
+            border-right: 5px solid var(--primary);
+            /* Accent on right for RTL */
+            animation: fadeIn 0.7s ease-out;
+        }
+
+        .quiz-question {
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .quiz-options {
+            margin-bottom: 1.5rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        .quiz-option {
+            display: block;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            background-color: white;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+            text-align: right;
+            /* Ensure text aligns right in options */
+        }
+
+        .quiz-option:hover {
+            background-color: #f5f5f5;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-left: 0.8rem;
+            /* Adjusted for RTL */
+            vertical-align: middle;
+            appearance: none;
+            /* Hide default radio button */
+            width: 1.2rem;
+            height: 1.2rem;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            top: 3px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: inset 0 0 0 4px white;
+        }
+
+        .quiz-option input[type="radio"]:checked+span {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .quiz-feedback {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            display: none;
+            animation: fadeIn 0.5s;
+            font-weight: bold;
+        }
+
+        .correct {
+            background-color: rgba(76, 175, 80, 0.15);
+            color: var(--success);
+            border-right: 4px solid var(--success);
+        }
+
+        .incorrect {
+            background-color: rgba(244, 67, 54, 0.15);
+            color: var(--danger);
+            border-right: 4px solid var(--danger);
+        }
+
+        .quiz-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            display: block;
+            /* Make button full width */
+            width: fit-content;
+            margin-right: auto;
+            /* Center button in RTL */
+            margin-left: auto;
+        }
+
+        .quiz-btn:hover {
+            background-color: #2d5f8b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 2rem 0;
+            overflow: hidden;
+            height: 25px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--success);
+            /* Green for progress */
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.6s ease-in-out;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            line-height: 25px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2.5rem;
+            gap: 1rem;
+        }
+
+        .lesson-navigation .btn {
+            flex-grow: 1;
+            text-align: center;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .lesson-navigation .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Tabs for Lesson 5 and Final Project */
+        .tabs {
+            display: flex;
+            justify-content: flex-end;
+            /* Align tabs to the right for RTL */
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #eee;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: #777;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+            background-color: var(--light);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-color: var(--primary);
+            background-color: var(--light);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 1.5rem 0;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            margin-top: 3rem;
+            border-top: 5px solid var(--accent);
+        }
+
+        .copyright {
+            color: #aaa;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .quiz-btn:not(:disabled) {
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .mascot {
+                font-size: 3rem;
+                bottom: -10px;
+                left: 10px;
+            }
+
+            .lesson-section {
+                padding: 1.5rem;
+            }
+
+            .lesson-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .quiz {
+                padding: 1.2rem;
+            }
+
+            .quiz-question {
+                font-size: 1.1rem;
+            }
+
+            .quiz-option {
+                padding: 0.6rem 1rem;
+            }
+
+            .tabs {
+                justify-content: flex-start;
+                /* Allow scroll on small screens */
+            }
+
+            .tab {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .mascot {
+                display: none;
+                /* Hide mascot on very small screens */
+            }
+
+            .container {
+                padding: 0 0.8rem;
+            }
+
+            .lesson-section {
+                padding: 1rem;
+            }
+
+            .lesson-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .quiz-btn {
+                width: 100%;
+                margin: 1rem auto 0 auto;
+            }
+
+            .lesson-navigation {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <h1> بايثون بالعربي</h1>
+            <p class="subtitle">مسار تعلم بايثون الممتع</p>
+            <div class="mascot">
+                🐍
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <span>بايثون بالعربي</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+
+        <div class="lesson-navigation">
+            <button class="btn" id="prevLesson" disabled>السابق <i class="fas fa-chevron-right"></i></button>
+            <button class="btn" id="nextLesson" disabled>التالي <i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <div class="lesson-section active" id="lesson1">
+            <h2>١. البرمجة يعني إيه؟</h2>
+
+            <div class="lesson-content">
+                <h3>إزاي الكمبيوتر بيفكر؟</h3>
+                <p>خلينا نتخيل إن الكمبيوتر زايد شوية... يعني لو قولتله "روح اشترلي خبز" مش هيعرف يعمل حاجة. بس لو
+                    قلناله:</p>
+
+                <ol>
+                    <li>امشي 10 خطوات لليمين</li>
+                    <li>لف شمال</li>
+                    <li>امشي لحد ما توصل للسوبرماركت</li>
+                    <li>ادفع 5 جنيه</li>
+                    <li>خد رغيف العيش</li>
+                    <li>ارجع بالظبط نفس الطريق</li>
+                </ol>
+
+                <p>دي بالظبط فكرة البرمجة! إحنا بنقول للكمبيوتر بالظبط إزاي يعمل الحاجة خطوة خطوة.</p>
+
+                <div class="quiz" id="quiz1-container">
+                    <div class="quiz-question">س١: لو عايز الكمبيوتر يحسب ناتج جمع ٥ + ٣، إيه الخطوات اللي ممكن
+                        نكتبها؟</div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz1" value="A">
+                            <span>قول له "يا كمبيوتر، ٥ + ٣ بيساوي كام؟"</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz1" value="B">
+                            <span>خليه يجمع ٥ و ٣ ويطبع الناتج</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz1" value="C">
+                            <span>اكتب ٥ + ٣ في ملف وحفظه</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz1', 'B', 'lesson1')">تحقق من الإجابة</button>
+                    <div id="quiz1-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>إيه اللي يخلي بايثون مميزة؟</h3>
+                <p>بايثون زي العربي الفصيح.. سهلة ومفهومة من أول مرة! كود بايثون بيقرأه أي حد تقريباً عارف إنجليزي:
+                </p>
+
+                <div class="code-block">
+                    <span class="code-keyword">if</span> age &gt; <span class="code-number">18</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"أنت بالغ
+                        يا معلم!"</span>)
+                </div>
+
+                <p>مقارنة بلغات تانية زي الجافا اللي محتاجة كتير جداً عشان تعمل حاجة بسيطة:</p>
+
+                <div class="code-block">
+                    <span class="code-keyword">public class</span> Main {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">public static void</span> main(String[] args)
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">int</span> age = <span
+                        class="code-number">20</span>;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> (age &gt; <span
+                        class="code-number">18</span>) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                        class="code-string">"أنت بالغ يا معلم!"</span>);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                    }
+                </div>
+
+                <div class="quiz" id="quiz2-container">
+                    <div class="quiz-question">س٢: إيه اللي يخلي بايثون مناسبة للمبتدئين؟</div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz2" value="A">
+                            <span>بتحتاج سطور قليلة عشان تعمل حاجة</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz2" value="B">
+                            <span>كتير من المكتبات الجاهزة</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz2" value="C">
+                            <span>كل الإجابات صح</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz2', 'C', 'lesson1')">تحقق من الإجابة</button>
+                    <div id="quiz2-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>نصيحة أخيرة</h3>
+                <p>متخليش كلمة "برمجة" تخوفك! الفكرة كلها إنك بتعلم الكمبيوتر يعمل حاجات بالترتيب اللي انت عايزه. زي
+                    ما بتعلم طفل صغير يعمل حاجة خطوة بخطوة.</p>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="lesson2">
+            <h2>٢. يا ترى بايثون ده ثعبان؟</h2>
+
+            <div class="lesson-content">
+                <h3>قصة بايثون</h3>
+                <p>بايثون مسمية على اسم مسلسل بريطاني قديم اسمه "Monty Python's Flying Circus" مش الثعبان! المبتكر
+                    جايدو فان روسوم كان بيحب المسلسل دا فسمى اللغة على اسمه.</p>
+
+                <p>بايثون ظهرت سنة 1991 (يعني تقريباً نفس عمر أغنية "كان عندي أمل") ومن ساعتها وهي بتتطور وتنتشر.
+                </p>
+
+                <div class="quiz" id="quiz3-container">
+                    <div class="quiz-question">س١: إيه سبب تسمية لغة بايثون بهذا الاسم؟</div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz3" value="A">
+                            <span>عشان المبتكر كان عنده ثعبان أليف</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz3" value="B">
+                            <span>على اسم مسلسل كوميدي</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz3" value="C">
+                            <span>عشان الكود بيتحرك زي الثعبان</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz3', 'B', 'lesson2')">تحقق من الإجابة</button>
+                    <div id="quiz3-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>ليه نتعلم بايثون؟</h3>
+                <p>بايثون سهلة جداً للمبتدئين، وكمان قوية جداً. يعني ممكن تستخدمها في:</p>
+
+                <ul>
+                    <li>برمجة المواقع (مثل Instagram و Pinterest)</li>
+                    <li>الذكاء الاصطناعي وتعلم الآلة</li>
+                    <li>تحليل البيانات والإحصاء</li>
+                    <li>ألعاب الكمبيوتر</li>
+                    <li>أتمتة المهام المملة (مثل عمل نسخ احتياطي للصور)</li>
+                </ul>
+
+                <div class="code-block">
+                    <span class="code-comment"># بايثون سهلة قراية حتى لو مبتدئ</span><br>
+                    <span class="code-function">print</span>(<span class="code-string">"أهلاً بالعالم!"</span>)<br>
+                    <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span
+                        class="code-function">range</span>(<span class="code-number">5</span>):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"بايثون
+                        رائعة!"</span>)
+                </div>
+
+                <h3>إزاي تنزل بايثون على جهازك؟</h3>
+                <p>١. روح على <a href="https://www.python.org/downloads/" target="_blank">موقع بايثون الرسمي</a></p>
+                <p>٢. نزل النسخة المناسبة لجهازك (هتلاقيها في أول الصفحة)</p>
+                <p>٣. شغل الملف اللي نزلته واتبع الخطوات (كلها Next لحد ما تخلص)</p>
+                <p>٤. افتح CMD أو Terminal واكتب <code>python --version</code> عشان تتأكد إنها شغالة</p>
+
+                <div class="quiz" id="quiz4-container">
+                    <div class="quiz-question">س٢: إيه أول حاجة تعملها عشان تتأكد إن بايثون شغالة على جهازك؟</div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz4" value="A">
+                            <span>أفتح بايثون وأكتب print("hello")</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz4" value="B">
+                            <span>أكتب python --version في الطرفية</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz4" value="C">
+                            <span>أبحث عن أيقونة بايثون على سطح المكتب</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz4', 'B', 'lesson2')">تحقق من الإجابة</button>
+                    <div id="quiz4-feedback" class="quiz-feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="lesson3">
+            <h2>٣. الطباعة على الشاشة</h2>
+
+            <div class="lesson-content">
+                <h3>أول برنامج ليك في بايثون</h3>
+                <p>أول حاجة هنتعلمها هي الطباعة على الشاشة باستخدام <code>print()</code>. دي أسهل حاجة في بايثون!
+                </p>
+
+                <div class="code-block">
+                    <span class="code-comment"># دي دالة الطباعة</span><br>
+                    <span class="code-function">print</span>(<span class="code-string">"أهلاً بك في بايثون
+                        بالعربي!"</span>)
+                </div>
+
+                <p>جرب الكود دا في IDLE أو في أي محرر نصوص وحفظه بامتداد .py</p>
+
+                <h3>إزاي تطبع أكتر من سطر؟</h3>
+                <p>ممكن تستخدم دالة print() أكتر من مرة، أو تستخدم ثلاث علامات تنصيص """</p>
+
+                <div class="code-block">
+                    <span class="code-comment"># الطريقة الأولى</span><br>
+                    <span class="code-function">print</span>(<span class="code-string">"السلام عليكم"</span>)<br>
+                    <span class="code-function">print</span>(<span class="code-string">"أهلاً وسهلاً
+                        بيك"</span>)<br>
+                    <span class="code-function">print</span>(<span class="code-string">"في بايثون
+                        بالعربي"</span>)<br><br>
+
+                    <span class="code-comment"># الطريقة الثانية</span><br>
+                    <span class="code-function">print</span>(<span class="code-string">"""السلام عليكم<br>أهلاً
+                        وسهلاً بيك<br>في بايثون بالعربي"""</span>)
+                </div>
+
+                <div class="quiz" id="quiz5-container">
+                    <div class="quiz-question">س١: إزاي تطبع جملة من سطرين باستخدام دالة print() مرة واحدة؟</div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz5" value="A">
+                            <span>print("سطر1", "سطر2")</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz5" value="B">
+                            <span>print("سطر1\nسطر2")</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz5" value="C">
+                            <span>print("سطر1") print("سطر2")</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz5', 'B', 'lesson3')">تحقق من الإجابة</button>
+                    <div id="quiz5-feedback" class="quiz-feedback"></div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="lesson-section" id="lesson4">
+            <h2>٤. المتغيرات بقى</h2>
+
+            <div class="lesson-content">
+                <h3>المتغيرات في الحياة</h3>
+                <p>المتغيرات زي العلب اللي بنحط فيها حاجات. مثلاً:</p>
+                <ul>
+                    <li>علبة اسمها "فلوسي" فيها 50 جنيه</li>
+                    <li>علبة اسمها "عمرك" فيها 20 سنة</li>
+                    <li>علبة اسمها "اسمك" فيها "أحمد"</li>
+                </ul>
+
+                <p>في بايثون، بنعمل نفس الحاجة بالظبط:</p>
+
+                <div class="code-block">
+                    <span class="code-comment"># تعريف متغيرات</span><br>
+                    money = <span class="code-number">50</span> <span class="code-comment"># جنيه</span><br>
+                    age = <span class="code-number">20</span> <span class="code-comment"># سنة</span><br>
+                    name = <span class="code-string">"أحمد"</span> <span class="code-comment"># اسم</span>
+                </div>
+
+                <h3>إزاي نستخدم المتغيرات؟</h3>
+                <p>بعد ما عرفنا المتغيرات، ممكن نستخدمها في أي حتة:</p>
+
+                <div class="code-block">
+                    <span class="code-function">print</span>(<span class="code-string">"أهلاً"</span>, name)<br>
+                    <span class="code-function">print</span>(<span class="code-string">"عندك"</span>, money, <span
+                        class="code-string">"جنيه في جيبك"</span>)<br>
+                    <span class="code-function">print</span>(<span class="code-string">"العمر المثالي للبرمجة
+                        هو"</span>, age)
+                </div>
+
+                <div class="quiz" id="quiz6-container">
+                    <div class="quiz-question">س١: إيه الناتج الصحيح للكود الآتي؟</div>
+                    <div class="code-block">
+                        x = <span class="code-number">5</span><br>
+                        y = <span class="code-number">2</span><br>
+                        <span class="code-function">print</span>(x + y)
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz6" value="A">
+                            <span>52</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz6" value="B">
+                            <span>7</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz6" value="C">
+                            <span>x + y</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz6', 'B', 'lesson4')">تحقق من الإجابة</button>
+                    <div id="quiz6-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>نصيحة مهمة</h3>
+                <p>اختار أسماء واضحة للمتغيرات. مثلاً <code>student_name</code> أحسن من <code>sn</code> عشان لما
+                    ترجع للكود بعد شهر تفهمه!</p>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="lesson5">
+            <h2>٥. أنواع البيانات - نوعك إيه؟</h2>
+
+            <div class="lesson-content">
+                <h3>أنواع البيانات الأساسية</h3>
+                <p>في بايثون فيه أنواع كتير للبيانات، لكن دلوقتي هنتعلم الأساسيات:</p>
+
+                <div class="tabs">
+                    <div class="tab active" onclick="openTab(event, 'int-tab')">أعداد صحيحة</div>
+                    <div class="tab" onclick="openTab(event, 'float-tab')">أعداد عشرية</div>
+                    <div class="tab" onclick="openTab(event, 'str-tab')">نصوص</div>
+                    <div class="tab" onclick="openTab(event, 'bool-tab')">قيم منطقية</div>
+                </div>
+
+                <div id="int-tab" class="tab-content active">
+                    <p>الأعداد الصحيحة (int) زي: ١، ٥، -٣، ٠</p>
+                    <div class="code-block">
+                        age = <span class="code-number">25</span> <span class="code-comment"># عدد صحيح</span><br>
+                        students = <span class="code-number">30</span> <span class="code-comment"># عدد صحيح</span>
+                    </div>
+                </div>
+
+                <div id="float-tab" class="tab-content">
+                    <p>الأعداد العشرية (float) زي: ٣.١٤، ٢.٥، -٠.٥</p>
+                    <div class="code-block">
+                        pi = <span class="code-number">3.14</span> <span class="code-comment"># عدد عشري</span><br>
+                        temperature = <span class="code-number">36.7</span> <span class="code-comment"># عدد
+                            عشري</span>
+                    </div>
+                </div>
+
+                <div id="str-tab" class="tab-content">
+                    <p>النصوص (str) أي حاجة بين علامتي تنصيص: "أحمد"، "Hello"، "١٢٣"</p>
+                    <div class="code-block">
+                        name = <span class="code-string">"أحمد"</span> <span class="code-comment"># نص</span><br>
+                        phone = <span class="code-string">"0123456789"</span> <span class="code-comment"># نص (ولو
+                            كان أرقام)</span>
+                    </div>
+                </div>
+
+                <div id="bool-tab" class="tab-content">
+                    <p>القيم المنطقية (bool) بس ممكن تكون True أو False</p>
+                    <div class="code-block">
+                        is_raining = <span class="code-keyword">True</span> <span class="code-comment">#
+                            نعم</span><br>
+                        has_money = <span class="code-keyword">False</span> <span class="code-comment"># لا</span>
+                    </div>
+                </div>
+
+                <div class="quiz" id="quiz7-container">
+                    <div class="quiz-question">س١: إيه نوع البيانات في الكود الآتي؟</div>
+                    <div class="code-block">
+                        price = <span class="code-string">"25.99"</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz7" value="A">
+                            <span>عدد صحيح (int)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz7" value="B">
+                            <span>عدد عشري (float)</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz7" value="C">
+                            <span>نص (str)</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz7', 'C', 'lesson5')">تحقق من الإجابة</button>
+                    <div id="quiz7-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>إزاي أعرف نوع المتغير؟</h3>
+                <p>استخدم دالة <code>type()</code> عشان تعرف نوع أي متغير:</p>
+
+                <div class="code-block">
+                    <span class="code-function">print</span>(<span class="code-function">type</span>(<span
+                        class="code-number">10</span>)) <span class="code-comment"># &lt;class 'int'&gt;</span><br>
+                    <span class="code-function">print</span>(<span class="code-function">type</span>(<span
+                        class="code-number">3.14</span>)) <span class="code-comment"># &lt;class
+                        'float'&gt;</span><br>
+                    <span class="code-function">print</span>(<span class="code-function">type</span>(<span
+                        class="code-string">"hello"</span>)) <span class="code-comment"># &lt;class
+                        'str'&gt;</span><br>
+                    <span class="code-function">print</span>(<span class="code-function">type</span>(<span
+                        class="code-keyword">True</span>)) <span class="code-comment"># &lt;class 'bool'&gt;</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="lesson6">
+            <h2>٦. العمليات الحسابية... بس بالحب</h2>
+
+            <div class="lesson-content">
+                <h3>العمليات الأساسية</h3>
+                <p>بايثون بتعرف كل العمليات الحسابية الأساسية:</p>
+
+                <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; text-align: right;">
+                    <tr style="background-color: var(--light);">
+                        <th style="padding: 0.8rem; border: 1px solid #ddd;">العملية</th>
+                        <th style="padding: 0.8rem; border: 1px solid #ddd;">الرمز</th>
+                        <th style="padding: 0.8rem; border: 1px solid #ddd;">مثال</th>
+                        <th style="padding: 0.8rem; border: 1px solid #ddd;">النتيجة</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">جمع</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">+</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">5 + 3</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">8</td>
+                    </tr>
+                    <tr style="background-color: #fcfcfc;">
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">طرح</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">-</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">10 - 2</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">8</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">ضرب</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">*</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">4 * 3</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">12</td>
+                    </tr>
+                    <tr style="background-color: #fcfcfc;">
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">قسمة</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">/</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">15 / 3</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">5.0</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">باقي القسمة</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">%</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">14 % 3</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">2</td>
+                    </tr>
+                    <tr style="background-color: #fcfcfc;">
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">أس</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">**</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">2 ** 3</td>
+                        <td style="padding: 0.7rem; border: 1px solid #eee;">8</td>
+                    </tr>
+                </table>
+
+                <div class="quiz" id="quiz8-container">
+                    <div class="quiz-question">س١: إيه نتيجة العملية الحسابية الآتية؟</div>
+                    <div class="code-block">
+                        <span class="code-number">15</span> % <span class="code-number">4</span>
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz8" value="A">
+                            <span>3</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz8" value="B">
+                            <span>3.75</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz8" value="C">
+                            <span>4</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz8', 'A', 'lesson6')">تحقق من الإجابة</button>
+                    <div id="quiz8-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>نصيحة عملية</h3>
+                <p>استخدم الأقواس () عشان تحدد أولويات العمليات الحسابية. مثلاً:</p>
+                <div class="code-block">
+                    <span class="code-number">3</span> + <span class="code-number">5</span> * <span
+                        class="code-number">2</span> <span class="code-comment"># النتيجة 13 (الضرب
+                        أولاً)</span><br>
+                    (<span class="code-number">3</span> + <span class="code-number">5</span>) * <span
+                        class="code-number">2</span> <span class="code-comment"># النتيجة 16 (الجمع أولاً)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="lesson7">
+            <h2>٧. الجمل الشرطية - لو و إلا</h2>
+
+            <div class="lesson-content">
+                <h3>اتخاذ القرارات في بايثون</h3>
+                <p>الجمل الشرطية بتخلي البرنامج يتخذ قرار بناءً على شرط معين. زي لما تقول:</p>
+                <p>"<strong>لو</strong> الجو نازل مطر، <strong>خد</strong> الشتوية معاك، <strong>إلا</strong> خدها
+                    برضه عشان متتغرّبش!"</p>
+
+                <p>في بايثون بنكتبها كدا:</p>
+
+                <div class="code-block">
+                    <span class="code-keyword">if</span> is_raining:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"خد
+                        الشتوية معاك"</span>)<br>
+                    <span class="code-keyword">else</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"خدها
+                        برضه عشان متتغرّبش!"</span>)
+                </div>
+
+                <div class="quiz" id="quiz9-container">
+                    <div class="quiz-question">س١: إيه الناتج الصحيح للكود الآتي؟</div>
+                    <div class="code-block">
+                        age = <span class="code-number">20</span><br>
+                        <span class="code-keyword">if</span> age &gt;= <span class="code-number">18</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">"مسموح لك بالدخول"</span>)<br>
+                        <span class="code-keyword">else</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">"ممنوع الدخول"</span>)
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz9" value="A">
+                            <span>"مسموح لك بالدخول"</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz9" value="B">
+                            <span>"ممنوع الدخول"</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz9" value="C">
+                            <span>مافيش ناتج</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz9', 'A', 'lesson7')">تحقق من الإجابة</button>
+                    <div id="quiz9-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>elif - وإلا لو</h3>
+                <p>لو عنداك أكتر من شرط، استخدم <code>elif</code> (إختصار لـ else if):</p>
+
+                <div class="code-block">
+                    grade = <span class="code-number">85</span><br><br>
+
+                    <span class="code-keyword">if</span> grade &gt;= <span class="code-number">90</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                        class="code-string">"امتياز"</span>)<br>
+                    <span class="code-keyword">elif</span> grade &gt;= <span class="code-number">80</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"جيد
+                        جداً"</span>)<br>
+                    <span class="code-keyword">elif</span> grade &gt;= <span class="code-number">70</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                        class="code-string">"جيد"</span>)<br>
+                    <span class="code-keyword">else</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                        class="code-string">"راسب"</span>)
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="lesson-section" id="lesson8">
+            <h2>٨. الحلقات - بنلف كتير ليه؟</h2>
+
+            <div class="lesson-content">
+                <h3>لوب for - للدوران عدد معين من المرات</h3>
+                <p>لما نعرف عدد المرات اللي عايزين نكرر فيها الكود، نستخدم <code>for</code>:</p>
+
+                <div class="code-block">
+                    <span class="code-comment"># اطبع الأعداد من 1 ل 5</span><br>
+                    <span class="code-keyword">for</span> i <span class="code-keyword">in</span> <span
+                        class="code-function">range</span>(<span class="code-number">1</span>, <span
+                        class="code-number">6</span>):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(i)
+                </div>
+
+                <p>الكود دا هيطبع:</p>
+                <div class="output">
+                    1<br>
+                    2<br>
+                    3<br>
+                    4<br>
+                    5
+                </div>
+
+                <div class="quiz" id="quiz10-container">
+                    <div class="quiz-question">س١: إزاي تطبع "أحب بايثون" 3 مرات باستخدام for loop؟</div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz10" value="A">
+                            <span>for i in range(3): print("أحب بايثون")</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz10" value="B">
+                            <span>for 3 times: print("أحب بايثون")</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz10" value="C">
+                            <span>repeat(3): print("أحب بايثون")</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz10', 'A', 'lesson8')">تحقق من الإجابة</button>
+                    <div id="quiz10-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>لوب while - للدوران لحد ما يتحقق شرط</h3>
+                <p>لما مش عارف عدد المرات بالظبط، لكن عارف الشرط اللي يوقف الدوران، استخدم <code>while</code>:</p>
+
+                <div class="code-block">
+                    count = <span class="code-number">1</span><br>
+                    <span class="code-keyword">while</span> count &lt;= <span class="code-number">5</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(count)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;count += <span class="code-number">1</span>
+                </div>
+
+                <h3>نصيحة مهمة</h3>
+                <p>خلي بالك من الـ infinite loops (الحلقات اللا نهائية)! لازم يكون في شرط يوقف اللوب، وإلا هيكمل لحد
+                    ما الجهاز يقع!</p>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="lesson9">
+            <h2>٩. الدوال - المطبخ بتاع الكود</h2>
+
+            <div class="lesson-content">
+                <h3>إزاي تعرف دالة؟</h3>
+                <p>الدالة (function) زي الوصفة في المطبخ.. بتجمع مجموعة من الخطوات في حاجة واحدة. تعريف الدالة بيبدأ
+                    بـ <code>def</code>:</p>
+
+                <div class="code-block">
+                    <span class="code-keyword">def</span> <span class="code-function">greet</span>():<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"أهلاً
+                        وسهلاً!"</span>)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"نورتنا
+                        اليوم!"</span>)<br><br>
+
+                    <span class="code-comment"># استدعاء الدالة</span><br>
+                    greet()
+                </div>
+
+                <div class="quiz" id="quiz11-container">
+                    <div class="quiz-question">س١: إيه الناتج الصحيح للكود الآتي؟</div>
+                    <div class="code-block">
+                        <span class="code-keyword">def</span> <span class="code-function">say_hello</span>():<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">"Hello"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">"World"</span>)<br><br>
+
+                        say_hello()
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz11" value="A">
+                            <span>Hello World</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz11" value="B">
+                            <span>Hello <br> World</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz11" value="C">
+                            <span>مافيش ناتج</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz11', 'B', 'lesson9')">تحقق من الإجابة</button>
+                    <div id="quiz11-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>الدوال مع باراميترات</h3>
+                <p>ممكن نمرر قيم للدوال عشان تتصرف بناءً عليها:</p>
+
+                <div class="code-block">
+                    <span class="code-keyword">def</span> <span class="code-function">greet</span>(name):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">f"أهلاً
+                        <span class="code-keyword">{</span>name<span class="code-keyword">}</span>! نورتنا
+                        اليوم!"</span>)<br><br>
+
+                    greet(<span class="code-string">"أحمد"</span>)<br>
+                    greet(<span class="code-string">"مريم"</span>)
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="lesson-section" id="lesson10">
+            <h2>١٠. القوائم - شنطة فيها حاجات</h2>
+
+            <div class="lesson-content">
+                <h3>إزاي تعرف قائمة؟</h3>
+                <p>القوائم (lists) في بايثون زي الشنطة فيها أكتر من حاجة. ممكن تحتوي على أي نوع بيانات:</p>
+
+                <div class="code-block">
+                    <span class="code-comment"># قائمة أسماء</span><br>
+                    names = [<span class="code-string">"أحمد"</span>, <span class="code-string">"مريم"</span>, <span
+                        class="code-string">"خالد"</span>]<br><br>
+
+                    <span class="code-comment"># قائمة أرقام</span><br>
+                    numbers = [<span class="code-number">1</span>, <span class="code-number">3</span>, <span
+                        class="code-number">5</span>, <span class="code-number">7</span>]<br><br>
+
+                    <span class="code-comment"># قائمة مختلطة</span><br>
+                    mixed = [<span class="code-number">1</span>, <span class="code-string">"أحمد"</span>, <span
+                        class="code-keyword">True</span>, <span class="code-number">3.14</span>]
+                </div>
+
+                <h3>إزاي تصل لعنصر في القائمة؟</h3>
+                <p>كل عنصر في القائمة ليه رقم index بيبدأ من صفر:</p>
+
+                <div class="code-block">
+                    names = [<span class="code-string">"أحمد"</span>, <span class="code-string">"مريم"</span>, <span
+                        class="code-string">"خالد"</span>]<br><br>
+
+                    <span class="code-function">print</span>(names[<span class="code-number">0</span>]) <span
+                        class="code-comment"># أحمد</span><br>
+                    <span class="code-function">print</span>(names[<span class="code-number">1</span>]) <span
+                        class="code-comment"># مريم</span><br>
+                    <span class="code-function">print</span>(names[<span class="code-number">2</span>]) <span
+                        class="code-comment"># خالد</span>
+                </div>
+
+                <div class="quiz" id="quiz12-container">
+                    <div class="quiz-question">س١: إيه الناتج الصحيح للكود الآتي؟</div>
+                    <div class="code-block">
+                        nums = [<span class="code-number">10</span>, <span class="code-number">20</span>, <span
+                            class="code-number">30</span>, <span class="code-number">40</span>]<br>
+                        <span class="code-function">print</span>(nums[<span class="code-number">2</span>])
+                    </div>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz12" value="A">
+                            <span>20</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz12" value="B">
+                            <span>30</span>
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="quiz12" value="C">
+                            <span>40</span>
+                        </label>
+                    </div>
+                    <button class="quiz-btn" onclick="checkQuiz('quiz12', 'B', 'lesson10')">تحقق من الإجابة</button>
+                    <div id="quiz12-feedback" class="quiz-feedback"></div>
+                </div>
+
+                <h3>التعديل على القوائم</h3>
+                <p>ممكن نضيف، نعدل، أو نحذف عناصر من القائمة:</p>
+
+                <div class="code-block">
+                    <span class="code-comment"># قائمة التسوق</span><br>
+                    shopping = [<span class="code-string">"خبز"</span>, <span class="code-string">"لبن"</span>,
+                    <span class="code-string">"بيض"</span>]<br><br>
+
+                    <span class="code-comment"># إضافة عنصر</span><br>
+                    shopping.append(<span class="code-string">"جبنة"</span>)<br><br>
+
+                    <span class="code-comment"># تعديل عنصر</span><br>
+                    shopping[<span class="code-number">1</span>] = <span class="code-string">"لبن
+                        رائب"</span><br><br>
+
+                    <span class="code-comment"># حذف عنصر</span><br>
+                    <span class="code-keyword">del</span> shopping[<span class="code-number">2</span>]<br><br>
+
+                    <span class="code-function">print</span>(shopping) <span class="code-comment"># ['خبز', 'لبن
+                        رائب', 'جبنة']</span>
+                </div>
+
+                <h3>نصيحة عملية</h3>
+                <p>استخدم <code>len()</code> عشان تعرف عدد العناصر في القائمة:</p>
+                <div class="code-block">
+                    names = [<span class="code-string">"أحمد"</span>, <span class="code-string">"مريم"</span>, <span
+                        class="code-string">"خالد"</span>]<br>
+                    <span class="code-function">print</span>(<span class="code-function">len</span>(names)) <span
+                        class="code-comment"># 3</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="final-project">
+            <h2>🎉 مشروعك الأول</h2>
+
+            <div class="lesson-content">
+                <h3>اختر مشروعك</h3>
+                <p>خلينا نطبق كل اللي تعلمناه في مشروع بسيط. اختر واحد من المشاريع دي:</p>
+
+                <div class="tabs">
+                    <div class="tab active" onclick="openTab(event, 'guess-number')">تخمين العدد</div>
+                    <div class="tab" onclick="openTab(event, 'calculator')">آلة حاسبة</div>
+                    <div class="tab" onclick="openTab(event, 'todo-list')">قائمة مهام</div>
+                </div>
+
+                <div id="guess-number" class="tab-content active">
+                    <h4>لعبة تخمين العدد</h4>
+                    <p>الكمبيوتر هيفكر في عدد عشوائي بين 1 و 20، وأنت بتخمنه لحد ما توصل للعدد الصحيح.</p>
+
+                    <div class="code-block">
+                        <span class="code-keyword">import</span> random<br><br>
+
+                        <span class="code-comment"># اختيار عدد عشوائي</span><br>
+                        secret_number = random.randint(<span class="code-number">1</span>, <span
+                            class="code-number">20</span>)<br>
+                        attempts = <span class="code-number">0</span><br><br>
+
+                        <span class="code-keyword">while</span> <span class="code-keyword">True</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;guess = <span class="code-function">int</span>(<span
+                            class="code-function">input</span>(<span class="code-string">"خمن العدد بين 1 و 20:
+                            "</span>))<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;attempts += <span class="code-number">1</span><br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> guess == secret_number:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">f"أحسنت! لقد وجدت العدد في
+                            <span class="code-keyword">{</span>attempts<span class="code-keyword">}</span>
+                            محاولات"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">break</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">elif</span> guess &lt; secret_number:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">"العدد أكبر من
+                            كدا"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">else</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">"العدد أصغر من كدا"</span>)
+                    </div>
+                </div>
+
+                <div id="calculator" class="tab-content">
+                    <h4>آلة حاسبة متطورة</h4>
+                    <p>آلة حاسبة بتاخد من المستخدم عملية حسابية كاملة (مثل 5 + 3) وتحسب النتيجة.</p>
+
+                    <div class="code-block">
+                        <span class="code-keyword">while</span> <span class="code-keyword">True</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;expression = <span class="code-function">input</span>(<span
+                            class="code-string">"ادخل العملية الحسابية (أو 'exit' للخروج): "</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> expression == <span
+                            class="code-string">"exit"</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">break</span><br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">try</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = <span
+                            class="code-function">eval</span>(expression)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">f"النتيجة: <span class="code-keyword">{</span>result<span
+                                class="code-keyword">}</span>"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">except</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">"عملية غير صحيحة، حاول مرة
+                            أخرى"</span>)
+                    </div>
+                </div>
+
+                <div id="todo-list" class="tab-content">
+                    <h4>قائمة مهام بسيطة</h4>
+                    <p>برنامج لإضافة وعرض المهام اليومية.</p>
+
+                    <div class="code-block">
+                        tasks = []<br><br>
+
+                        <span class="code-keyword">while</span> <span class="code-keyword">True</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"\n1.
+                            عرض المهام"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"2.
+                            إضافة مهمة"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"3.
+                            حذف مهمة"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span class="code-string">"4.
+                            خروج"</span>)<br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;choice = <span class="code-function">input</span>(<span
+                            class="code-string">"اختر خيارًا: "</span>)<br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> choice == <span
+                            class="code-string">"1"</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> <span
+                            class="code-keyword">not</span> tasks:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="code-function">print</span>(<span class="code-string">"لا توجد مهام!"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">else</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="code-keyword">for</span> i, task <span class="code-keyword">in</span> <span
+                            class="code-function">enumerate</span>(tasks, <span class="code-number">1</span>):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="code-function">print</span>(<span class="code-string">f"<span
+                                class="code-keyword">{</span>i<span class="code-keyword">}</span>. <span
+                                class="code-keyword">{</span>task<span class="code-keyword">}</span>"</span>)<br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">elif</span> choice == <span
+                            class="code-string">"2"</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;task = <span
+                            class="code-function">input</span>(<span class="code-string">"ادخل المهمة الجديدة:
+                            "</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tasks.append(task)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">"تمت إضافة
+                            المهمة!"</span>)<br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">elif</span> choice == <span
+                            class="code-string">"3"</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> <span
+                            class="code-keyword">not</span> tasks:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="code-function">print</span>(<span class="code-string">"لا توجد مهام
+                            للحذف!"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">else</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;task_num = <span
+                            class="code-function">int</span>(<span class="code-function">input</span>(<span
+                            class="code-string">"ادخل رقم المهمة للحذف: "</span>)) - <span
+                            class="code-number">1</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="code-keyword">if</span> <span class="code-number">0</span> &lt;= task_num &lt;
+                        <span class="code-function">len</span>(tasks):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="code-keyword">del</span> tasks[task_num]<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="code-function">print</span>(<span class="code-string">"تم حذف
+                            المهمة!"</span>)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="code-keyword">else</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="code-function">print</span>(<span class="code-string">"رقم المهمة غير
+                            صحيح!"</span>)<br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">elif</span> choice == <span
+                            class="code-string">"4"</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">break</span><br><br>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">else</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">print</span>(<span
+                            class="code-string">"خيار غير صحيح، حاول مرة
+                            أخرى"</span>)
+                    </div>
+                </div>
+
+                <h3>مبروك! 🎉</h3>
+                <p>إنت خلاص خلصت المستوى المبتدئ في بايثون! جرب تعدل على المشاريع دي أو تبدأ مشروعك الخاص.</p>
+                <p>لو عندك أي سؤال، متترددش تسأل في مجموعتنا على فيسبوك أو تويتر.</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Set document direction for RTL
+        document.documentElement.setAttribute('dir', 'rtl');
+
+        // Lesson management
+        const lessons = [
+            'lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson5',
+            'lesson6', 'lesson7', 'lesson8', 'lesson9', 'lesson10', 'final-project'
+        ];
+        let currentLessonIndex = 0;
+
+        const nextLessonBtn = document.getElementById('nextLesson');
+        const prevLessonBtn = document.getElementById('prevLesson');
+        const progressBar = document.getElementById('progressBar');
+
+        const quizzesPerLesson = {
+            'lesson1': ['quiz1', 'quiz2'],
+            'lesson2': ['quiz3', 'quiz4'],
+            'lesson3': ['quiz5'],
+            'lesson4': ['quiz6'],
+            'lesson5': ['quiz7'],
+            'lesson6': ['quiz8'],
+            'lesson7': ['quiz9'],
+            'lesson8': ['quiz10'],
+            'lesson9': ['quiz11'],
+            'lesson10': ['quiz12'],
+            'final-project': [] // No quizzes in final project, completion is automatic
+        };
+
+        // Function to load the last viewed lesson
+        function loadLastLesson() {
+            const savedLessonIndex = localStorage.getItem('currentLessonIndex');
+            if (savedLessonIndex !== null) {
+                currentLessonIndex = parseInt(savedLessonIndex);
+            }
+            showLesson(currentLessonIndex);
+        }
+
+        // Function to display a specific lesson
+        function showLesson(index) {
+            lessons.forEach((lessonId, idx) => {
+                const lessonElement = document.getElementById(lessonId);
+                if (idx === index) {
+                    lessonElement.classList.add('active');
+                } else {
+                    lessonElement.classList.remove('active');
+                }
+            });
+            localStorage.setItem('currentLessonIndex', currentLessonIndex);
+            updateNavigationButtons();
+            updateOverallProgress();
+            // Scroll to the top of the content area when a new lesson is loaded
+            document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update navigation buttons (enabled/disabled)
+        function updateNavigationButtons() {
+            prevLessonBtn.disabled = currentLessonIndex === 0;
+
+            // Enable next only if all quizzes in the current lesson are answered correctly
+            const currentLessonId = lessons[currentLessonIndex];
+            const currentLessonQuizzes = quizzesPerLesson[currentLessonId];
+            let allQuizzesCorrect = true;
+
+            if (currentLessonQuizzes && currentLessonQuizzes.length > 0) {
+                for (const quizName of currentLessonQuizzes) {
+                    if (localStorage.getItem(quizName) !== 'correct') {
+                        allQuizzesCorrect = false;
+                        break;
+                    }
+                }
+            }
+
+            // The final project can always be moved to if the previous lesson is complete
+            if (currentLessonId === 'final-project') {
+                nextLessonBtn.disabled = true; // No next lesson after final project
+            } else {
+                nextLessonBtn.disabled = !allQuizzesCorrect || (currentLessonIndex === lessons.length - 1);
+            }
+        }
+
+        // Navigation button event listeners
+        nextLessonBtn.addEventListener('click', () => {
+            if (currentLessonIndex < lessons.length - 1) {
+                currentLessonIndex++;
+                showLesson(currentLessonIndex);
+            }
+        });
+
+        prevLessonBtn.addEventListener('click', () => {
+            if (currentLessonIndex > 0) {
+                currentLessonIndex--;
+                showLesson(currentLessonIndex);
+            }
+        });
+
+        // Quiz functionality
+        function checkQuiz(quizName, correctAnswer, lessonId) {
+            const selectedOption = document.querySelector(`input[name="${quizName}"]:checked`);
+            const feedbackElement = document.getElementById(`${quizName}-feedback`);
+            const quizContainer = document.getElementById(`${quizName}-container`);
+
+            // Reset feedback style
+            feedbackElement.style.display = "none";
+            feedbackElement.classList.remove('correct', 'incorrect');
+
+            if (!selectedOption) {
+                feedbackElement.textContent = "من فضلك اختر إجابة أولاً!";
+                feedbackElement.classList.add("incorrect");
+                feedbackElement.style.display = "block";
+                return;
+            }
+
+            // Disable all radio options and the check button after submission
+            const quizOptions = quizContainer.querySelectorAll(`input[name="${quizName}"]`);
+            quizOptions.forEach(option => option.disabled = true);
+            quizContainer.querySelector('.quiz-btn').disabled = true;
+
+            if (selectedOption.value === correctAnswer) {
+                feedbackElement.textContent = "إجابة صحيحة! أحسنت! 🎉";
+                feedbackElement.classList.add("correct");
+                localStorage.setItem(quizName, 'correct'); // Save correct answer
+            } else {
+                feedbackElement.textContent = `إجابة خاطئة! الإجابة الصحيحة هي: ${correctAnswer === 'A' ? 'الخيار الأول' : correctAnswer === 'B' ? 'الخيار الثاني' : 'الخيار الثالث'} 💪`;
+                feedbackElement.classList.add("incorrect");
+            }
+            feedbackElement.style.display = "block";
+            updateOverallProgress(); // Update progress bar after each quiz attempt
+            updateNavigationButtons(); // Re-evaluate next button state
+        }
+
+        // Tab functionality (for Lesson 5 and Final Project)
+        function openTab(evt, tabName) {
+            const tabContents = evt.currentTarget.closest('.lesson-content').querySelectorAll(".tab-content");
+            tabContents.forEach(content => content.classList.remove("active"));
+
+            const tabs = evt.currentTarget.closest('.tabs').querySelectorAll(".tab");
+            tabs.forEach(tab => tab.classList.remove("active"));
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Overall progress tracking
+        function updateOverallProgress() {
+            let completedQuizzes = 0;
+            let totalQuizzes = 0;
+
+            // Count total quizzes and completed quizzes
+            for (const lessonId in quizzesPerLesson) {
+                const quizzes = quizzesPerLesson[lessonId];
+                totalQuizzes += quizzes.length;
+                quizzes.forEach(quizName => {
+                    if (localStorage.getItem(quizName) === 'correct') {
+                        completedQuizzes++;
+                    }
+                });
+            }
+
+            // Calculate completed lessons (a lesson is considered complete if all its quizzes are correct)
+            let completedLessons = 0;
+            lessons.forEach((lessonId, idx) => {
+                if (idx < currentLessonIndex) { // All previous lessons are considered "viewed"
+                    let allQuizzesInLessonCorrect = true;
+                    const quizzesInThisLesson = quizzesPerLesson[lessonId];
+                    if (quizzesInThisLesson && quizzesInThisLesson.length > 0) {
+                        for (const quizName of quizzesInThisLesson) {
+                            if (localStorage.getItem(quizName) !== 'correct') {
+                                allQuizzesInLessonCorrect = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (quizzesInThisLesson.length === 0 || allQuizzesInLessonCorrect) { // Lessons without quizzes are completed by just viewing them
+                        completedLessons++;
+                    }
+                } else if (idx === currentLessonIndex) { // Current lesson
+                    let allQuizzesInCurrentLessonCorrect = true;
+                    const quizzesInCurrentLesson = quizzesPerLesson[lessonId];
+                    if (quizzesInCurrentLesson && quizzesInCurrentLesson.length > 0) {
+                        for (const quizName of quizzesInCurrentLesson) {
+                            if (localStorage.getItem(quizName) !== 'correct') {
+                                allQuizzesInCurrentLessonCorrect = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (quizzesInCurrentLesson.length === 0 || allQuizzesInCurrentLessonCorrect) {
+                        completedLessons++;
+                    }
+                }
+            });
+
+
+            const totalCompletableUnits = lessons.length + totalQuizzes;
+            let currentUnitsCompleted = completedLessons + completedQuizzes;
+
+            const progressPercentage = (currentUnitsCompleted / totalCompletableUnits) * 100;
+
+            progressBar.style.width = `${progressPercentage}%`;
+            progressBar.textContent = `${Math.round(progressPercentage)}%`;
+        }
+
+        // Initialize quiz states and buttons on page load
+        function initializeQuizzes() {
+            for (const lessonId in quizzesPerLesson) {
+                const quizzes = quizzesPerLesson[lessonId];
+                quizzes.forEach(quizName => {
+                    const quizContainer = document.getElementById(`${quizName}-container`);
+                    if (quizContainer) {
+                        const feedbackElement = document.getElementById(`${quizName}-feedback`);
+                        const quizOptions = quizContainer.querySelectorAll(`input[name="${quizName}"]`);
+                        const quizButton = quizContainer.querySelector('.quiz-btn');
+
+                        // Check if quiz was previously answered correctly
+                        if (localStorage.getItem(quizName) === 'correct') {
+                            feedbackElement.textContent = "أحسنت! تم إكمال هذا الاختبار من قبل. 🎉";
+                            feedbackElement.classList.add("correct");
+                            feedbackElement.style.display = "block";
+                            quizOptions.forEach(option => option.disabled = true);
+                            quizButton.disabled = true;
+                        } else {
+                            // Re-enable options and button if not completed
+                            quizOptions.forEach(option => option.disabled = false);
+                            quizButton.disabled = false;
+                        }
+                    }
+                });
+            }
+        }
+
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLastLesson();
+            initializeQuizzes(); // Initialize quiz states when page loads
+            updateNavigationButtons();
+            updateOverallProgress();
+        });
+    </script>
+</body>
+
+</html>
